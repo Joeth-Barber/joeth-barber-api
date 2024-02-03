@@ -5,7 +5,9 @@ import {
 import { prisma } from "../../../database/postgres";
 import { ICustomer } from "../../../models/customer";
 
-export class PostgresCreateCustomer implements ICreateCustomerRepository {
+export class PostgresCreateCustomerRepository
+  implements ICreateCustomerRepository
+{
   async createCustomer(params: ICreateCustomerParams): Promise<ICustomer> {
     const createdCustomer = await prisma.customer.create({
       data: {

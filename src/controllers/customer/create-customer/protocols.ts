@@ -1,4 +1,11 @@
 import { ICustomer } from "../../../models/customer";
+import { IHttpRequest, IHttpResponse } from "../../protocols";
+
+export interface ICreateCustomerController {
+  handle(
+    httpRequest: IHttpRequest<ICreateCustomerParams>
+  ): Promise<IHttpResponse<ICustomer>>;
+}
 
 export interface ICreateCustomerParams {
   full_name: string;
