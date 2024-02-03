@@ -6,7 +6,7 @@ export interface ICustomer {
   address: {
     zipCode: number;
     street: string;
-    house_number: number;
+    houseNumber: number;
     neighborhood: string;
     city: string;
     state: string;
