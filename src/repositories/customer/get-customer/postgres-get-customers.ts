@@ -1,6 +1,6 @@
-import { IGetCustomersRepository } from "../../controllers/customer/get-customers/protocols";
-import { prisma } from "../../database/postgres";
-import { ICustomer } from "../../models/customer";
+import { IGetCustomersRepository } from "../../../controllers/customer/get-customers/protocols";
+import { prisma } from "../../../database/postgres";
+import { ICustomer } from "../../../models/customer";
 
 export class PostgresGetCustomersRepository implements IGetCustomersRepository {
   async getCustomers(): Promise<ICustomer[]> {

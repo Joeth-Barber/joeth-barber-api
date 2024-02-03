@@ -1,7 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import { GetCustomersController } from "./controllers/customer/get-customers/get-customers";
-import { PostgresGetCustomersRepository } from "./repositories/customer/postgres-get-customers";
+import { PostgresGetCustomersRepository } from "./repositories/customer/get-customer/postgres-get-customers";
 
 config();
 
