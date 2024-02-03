@@ -1,0 +1,36 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Customer {
+  id            Int       @id @default(autoincrement())
+  full_name     String
+  email         String    @unique
+  phone_number  String
+  password      String
+  address       Address   @relation(fields: [addressId], references: [id])
+  addressId     Int
+
+  @@map("customers")
+}
+
+model Address {
+  id            Int       @id @default(autoincrement())
+  zip_code      String
+  street        String
+  house_number  String
+  neighborhood  String
+  city          String
+  state         String
+  customers     Customer[]
+
+  @@map("adresses")
+}
+

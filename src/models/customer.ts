@@ -1,12 +1,12 @@
 export interface ICustomer {
   full_name: string;
   email: string;
-  phoneNumber: number;
+  phone_number: number;
   password: string;
   address: {
-    zipCode: number;
+    zip_code: number;
     street: string;
-    houseNumber: number;
+    house_number: number;
     neighborhood: string;
     city: string;
     state: string;

@@ -7,12 +7,12 @@ export class PostgresGetCustomersRepository implements IGetCustomersRepository {
       {
         full_name: "João",
         email: "joao.silva@email.com",
-        phoneNumber: 11933986562,
+        phone_number: 11933986562,
         password: "senha_segura",
         address: {
-          zipCode: 6145096,
+          zip_code: 6145096,
           street: "Rua da Miná",
-          houseNumber: 85,
+          house_number: 85,
           neighborhood: "Jardim Conceição",
           city: "Osaco",
           state: "SP",
