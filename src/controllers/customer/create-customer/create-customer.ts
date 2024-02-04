@@ -5,6 +5,7 @@ import {
   ICreateCustomerParams,
   ICreateCustomerRepository,
 } from "./protocols";
+import bcrypt from "bcrypt";
 import validator from "validator";
 
 export class CreateCustomerController implements ICreateCustomerController {
@@ -15,55 +16,33 @@ export class CreateCustomerController implements ICreateCustomerController {
   async handle(
     httpRequest: IHttpRequest<ICreateCustomerParams>
   ): Promise<IHttpResponse<ICustomer>> {
-    const requiredFields = [
-      "full_name",
-      "email",
-      "password",
-      "phone_number",
-      "address.zip_code",
-      "address.street",
-      "address.house_number",
-      "address.neighborhood",
-      "address.city",
-      "address.state",
-    ];
+    try {
+      const emailIsValid = validator.isEmail(httpRequest.body!.email);
 
-    for (const field of requiredFields) {
-      const fieldValue =
-        httpRequest?.body?.[field as keyof ICreateCustomerParams];
-
-      if (
-        typeof fieldValue === "object" &&
-        fieldValue !== null &&
-        Object.values(fieldValue).some(
-          (value) => typeof value === "string" && value.trim() === ""
-        )
-      ) {
+      if (!emailIsValid) {
         return {
           statusCode: 400,
-          body: `Field ${field} is required and must not be empty!`,
+          body: "E-mail is invalid.",
         };
       }
-    }
 
-    const emailIsValid = validator.isEmail(httpRequest.body!.email);
+      const hashedPassword = await bcrypt.hash(httpRequest.body!.password, 10);
 
-    if (!emailIsValid) {
-      return {
-        statusCode: 400,
-        body: "E-mail is invalid.",
+      const customerParamsWithHashedPassword: ICreateCustomerParams = {
+        ...httpRequest.body!,
+        password: hashedPassword,
       };
-    }
 
-    try {
       const customer = await this.createCustomerRepository.createCustomer(
-        httpRequest.body!
+        customerParamsWithHashedPassword
       );
       return {
         statusCode: 201,
         body: customer,
       };
     } catch (error) {
+      console.log(error);
+
       return {
         statusCode: 500,
         body: "Something went wrong.",
