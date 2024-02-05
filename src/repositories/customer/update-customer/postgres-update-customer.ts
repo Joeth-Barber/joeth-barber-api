@@ -9,12 +9,12 @@ export class PostgresUpdateCustomerRepository
   implements IUpdateCustomerRepository
 {
   async updateCustomer(
-    id: number,
+    id: string,
     params: IUpdateCustomerParams
   ): Promise<ICustomer> {
     const customer = await prisma.customer.update({
       where: {
-        id,
+        id: Number(id),
       },
       data: {
         ...params,

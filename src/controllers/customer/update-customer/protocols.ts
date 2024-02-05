@@ -1,4 +1,5 @@
 import { ICustomer } from "../../../models/customer";
+import { IHttpRequest, IHttpResponse } from "../../protocols";
 
 export interface IUpdateCustomerParams {
   full_name?: string;
@@ -14,6 +15,10 @@ export interface IUpdateCustomerParams {
   };
 }
 
+export interface IUpdateCustomerController {
+  handle(httpRequest: IHttpRequest<any>): Promise<IHttpResponse<ICustomer>>;
+}
+
 export interface IUpdateCustomerRepository {
-  updateCustomer(id: number, params: IUpdateCustomerParams): Promise<ICustomer>;
+  updateCustomer(id: string, params: IUpdateCustomerParams): Promise<ICustomer>;
 }
