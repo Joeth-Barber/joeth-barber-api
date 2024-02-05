@@ -15,7 +15,7 @@ model Customer {
   email         String    @unique
   phone_number  String
   password      String
-  address       Address   @relation(fields: [addressId], references: [id])
+  address       Address   @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId     Int
 
   @@map("customers")
@@ -31,6 +31,6 @@ model Address {
   state         String
   customers     Customer[]
 
-  @@map("adresses")
+  @@map("addresses")
 }
 

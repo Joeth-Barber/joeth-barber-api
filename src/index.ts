@@ -6,6 +6,8 @@ import { CreateCustomerController } from "./controllers/customer/create-customer
 import { PostgresCreateCustomerRepository } from "./repositories/customer/create-customer/postgres-create-customer";
 import { PostgresUpdateCustomerRepository } from "./repositories/customer/update-customer/postgres-update-customer";
 import { UpdateCustomerController } from "./controllers/customer/update-customer/update-customer";
+import { PostgresDeleteCustomerRepository } from "./repositories/customer/delete-customer/postgres-delete-customer";
+import { DeleteCustomerController } from "./controllers/customer/delete-customer/delete-customer";
 
 config();
 
@@ -49,6 +51,21 @@ app.patch("/customers/:id", async (req, res) => {
 
   const { body, statusCode } = await updateCustomerController.handle({
     body: req.body,
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.delete("/customers/:id", async (req, res) => {
+  const postgresDeleteCustomerRepository =
+    new PostgresDeleteCustomerRepository();
+
+  const deleteCustomerController = new DeleteCustomerController(
+    postgresDeleteCustomerRepository
+  );
+
+  const { body, statusCode } = await deleteCustomerController.handle({
     params: req.params,
   });
 
