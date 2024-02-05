@@ -13,7 +13,7 @@ export class GetCustomerByIdController implements IGetCustomerByIdController {
     httpRequest: IHttpRequest<any>
   ): Promise<IHttpResponse<ICustomer>> {
     try {
-      const id = httpRequest?.body?.id;
+      const id = httpRequest?.params?.id;
 
       if (!id) {
         return {
