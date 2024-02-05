@@ -3,7 +3,7 @@ export interface ICustomer {
   email: string;
   phone_number: string;
   password: string;
-  address: {
+  address?: {
     zip_code: string;
     street: string;
     house_number: string;

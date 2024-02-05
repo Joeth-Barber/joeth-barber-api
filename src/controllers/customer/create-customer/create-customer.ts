@@ -28,14 +28,13 @@ export class CreateCustomerController implements ICreateCustomerController {
 
       const hashedPassword = await bcrypt.hash(httpRequest.body!.password, 10);
 
-      const customerParamsWithHashedPassword: ICreateCustomerParams = {
+      const newCustomer: ICreateCustomerParams = {
         ...httpRequest.body!,
         password: hashedPassword,
       };
 
-      const customer = await this.createCustomerRepository.createCustomer(
-        customerParamsWithHashedPassword
-      );
+      const customer =
+        await this.createCustomerRepository.createCustomer(newCustomer);
       return {
         statusCode: 201,
         body: customer,
