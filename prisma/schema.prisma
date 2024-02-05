@@ -15,22 +15,6 @@ model Customer {
   email         String    @unique
   phone_number  String
   password      String
-  address       Address   @relation(fields: [addressId], references: [id], onDelete: Cascade)
-  addressId     Int
 
   @@map("customers")
 }
-
-model Address {
-  id            Int       @id @default(autoincrement())
-  zip_code      String
-  street        String
-  house_number  String
-  neighborhood  String
-  city          String
-  state         String
-  customers     Customer[]
-
-  @@map("addresses")
-}
-

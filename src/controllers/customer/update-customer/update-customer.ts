@@ -30,7 +30,6 @@ export class UpdateCustomerController implements IUpdateCustomerController {
         "full_name",
         "phone_number",
         "password",
-        "address",
       ];
 
       const someFieldIsNotAllowedToUpdate = Object.keys(body).some(

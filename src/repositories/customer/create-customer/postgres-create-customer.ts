@@ -15,19 +15,6 @@ export class PostgresCreateCustomerRepository
         email: params.email,
         phone_number: params.phone_number,
         password: params.password,
-        address: {
-          create: {
-            zip_code: params.address.zip_code,
-            street: params.address.street,
-            house_number: params.address.house_number,
-            neighborhood: params.address.neighborhood,
-            city: params.address.city,
-            state: params.address.state,
-          },
-        },
-      },
-      include: {
-        address: true,
       },
     });
 

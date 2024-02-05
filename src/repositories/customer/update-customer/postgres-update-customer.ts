@@ -18,9 +18,6 @@ export class PostgresUpdateCustomerRepository
       },
       data: {
         ...params,
-        address: {
-          update: params.address,
-        },
       },
     });
 
