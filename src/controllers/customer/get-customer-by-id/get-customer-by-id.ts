@@ -1,4 +1,5 @@
 import { ICustomer } from "../../../models/customer";
+import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { IGetCustomerByIdRepository } from "./protocols";
 
@@ -8,28 +9,19 @@ export class GetCustomerByIdController implements IController {
   ) {}
   async handle(
     httpRequest: IHttpRequest<any>
-  ): Promise<IHttpResponse<ICustomer>> {
+  ): Promise<IHttpResponse<ICustomer | string>> {
     try {
       const id = httpRequest?.params?.id;
 
       if (!id) {
-        return {
-          statusCode: 400,
-          body: "Customer not found.",
-        };
+        return badRequest("Customer not found.");
       }
 
       const customer = await this.getCustomerByIdRepository.getCustomerById(id);
 
-      return {
-        statusCode: 200,
-        body: customer,
-      };
+      return ok<ICustomer>(customer);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong.",
-      };
+      return serverError();
     }
   }
 }

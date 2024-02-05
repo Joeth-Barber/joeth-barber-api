@@ -1,4 +1,5 @@
 import { ICustomer } from "../../../models/customer";
+import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { IUpdateCustomerParams, IUpdateCustomerRepository } from "./protocols";
 import { hash } from "bcrypt";
@@ -10,23 +11,17 @@ export class UpdateCustomerController implements IController {
 
   async handle(
     httpRequest: IHttpRequest<IUpdateCustomerParams>
-  ): Promise<IHttpResponse<ICustomer>> {
+  ): Promise<IHttpResponse<ICustomer | string>> {
     try {
       const id = httpRequest?.params?.id;
       const body = httpRequest?.body;
 
       if (!body) {
-        return {
-          statusCode: 400,
-          body: "Missing fields.",
-        };
+        return badRequest("Missing fields.");
       }
 
       if (!id) {
-        return {
-          statusCode: 400,
-          body: "Missing customer id.",
-        };
+        return badRequest("Missing customer id.");
       }
 
       const allowedFieldsToUpdate: (keyof IUpdateCustomerParams)[] = [
@@ -41,10 +36,7 @@ export class UpdateCustomerController implements IController {
       );
 
       if (someFieldIsNotAllowedToUpdate) {
-        return {
-          statusCode: 400,
-          body: "Some received fiel is not allowed.",
-        };
+        return badRequest("Some received fiel is not allowed.");
       }
 
       if (body.password) {
@@ -57,16 +49,10 @@ export class UpdateCustomerController implements IController {
         body
       );
 
-      return {
-        statusCode: 200,
-        body: customer,
-      };
+      return ok<ICustomer>(customer);
     } catch (error) {
       console.log(error);
-      return {
-        statusCode: 500,
-        body: "Something went wrong.",
-      };
+      return serverError();
     }
   }
 }

@@ -1,4 +1,5 @@
 import { ICustomer } from "../../../models/customer";
+import { badRequest, created, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { ICreateCustomerParams, ICreateCustomerRepository } from "./protocols";
 import bcrypt from "bcrypt";
@@ -11,15 +12,12 @@ export class CreateCustomerController implements IController {
 
   async handle(
     httpRequest: IHttpRequest<ICreateCustomerParams>
-  ): Promise<IHttpResponse<ICustomer>> {
+  ): Promise<IHttpResponse<ICustomer | string>> {
     try {
       const emailIsValid = validator.isEmail(httpRequest.body!.email);
 
       if (!emailIsValid) {
-        return {
-          statusCode: 400,
-          body: "E-mail is invalid.",
-        };
+        return badRequest("E-mail is invalid.");
       }
 
       const hashedPassword = await bcrypt.hash(httpRequest.body!.password, 10);
@@ -31,17 +29,12 @@ export class CreateCustomerController implements IController {
 
       const customer =
         await this.createCustomerRepository.createCustomer(newCustomer);
-      return {
-        statusCode: 201,
-        body: customer,
-      };
+
+      return created<ICustomer>(customer);
     } catch (error) {
       console.log(error);
 
-      return {
-        statusCode: 500,
-        body: "Something went wrong.",
-      };
+      return serverError();
     }
   }
 }

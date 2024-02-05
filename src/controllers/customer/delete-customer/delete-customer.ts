@@ -1,4 +1,5 @@
 import { ICustomer } from "../../../models/customer";
+import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { IDeleteCustomerRepository } from "./protocols";
 
@@ -9,28 +10,19 @@ export class DeleteCustomerController implements IController {
 
   async handle(
     httpRequest: IHttpRequest<any>
-  ): Promise<IHttpResponse<ICustomer>> {
+  ): Promise<IHttpResponse<ICustomer | string>> {
     try {
       const id = httpRequest?.params?.id;
 
       if (!id) {
-        return {
-          statusCode: 400,
-          body: "Missing customer Id.",
-        };
+        return badRequest("Missing customer Id.");
       }
 
       const customer = await this.deleteCustomerRepository.deleteCustomer(id);
 
-      return {
-        statusCode: 200,
-        body: customer,
-      };
+      return ok<ICustomer>(customer);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong.",
-      };
+      return serverError();
     }
   }
 }

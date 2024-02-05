@@ -6,7 +6,7 @@ export interface IHttpRequest<B> {
 
 export interface IHttpResponse<T> {
   statusCode: number;
-  body: T | string;
+  body: T;
 }
 
 export interface IController {

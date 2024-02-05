@@ -1,4 +1,6 @@
-import { IController } from "../../protocols";
+import { ICustomer } from "../../../models/customer";
+import { ok, serverError } from "../../helpers";
+import { IController, IHttpResponse } from "../../protocols";
 import { IGetCustomersRepository } from "./protocols";
 
 export class GetCustomersController implements IController {
@@ -6,19 +8,13 @@ export class GetCustomersController implements IController {
     private readonly getCustomersRepository: IGetCustomersRepository
   ) {}
 
-  async handle() {
+  async handle(): Promise<IHttpResponse<ICustomer[] | string>> {
     try {
       const customers = await this.getCustomersRepository.getCustomers();
 
-      return {
-        statusCode: 200,
-        body: customers,
-      };
+      return ok<ICustomer[]>(customers);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong.",
-      };
+      return serverError();
     }
   }
 }
