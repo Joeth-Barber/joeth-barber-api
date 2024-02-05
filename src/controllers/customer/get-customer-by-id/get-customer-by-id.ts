@@ -1,11 +1,8 @@
 import { ICustomer } from "../../../models/customer";
-import { IHttpRequest, IHttpResponse } from "../../protocols";
-import {
-  IGetCustomerByIdController,
-  IGetCustomerByIdRepository,
-} from "./protocols";
+import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import { IGetCustomerByIdRepository } from "./protocols";
 
-export class GetCustomerByIdController implements IGetCustomerByIdController {
+export class GetCustomerByIdController implements IController {
   constructor(
     private readonly getCustomerByIdRepository: IGetCustomerByIdRepository
   ) {}

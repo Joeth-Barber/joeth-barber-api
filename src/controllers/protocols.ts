@@ -8,3 +8,7 @@ export interface IHttpResponse<T> {
   statusCode: number;
   body: T | string;
 }
+
+export interface IController {
+  handle(httpRequest: IHttpRequest<unknown>): Promise<IHttpResponse<unknown>>;
+}

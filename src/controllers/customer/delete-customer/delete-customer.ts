@@ -1,11 +1,8 @@
 import { ICustomer } from "../../../models/customer";
-import { IHttpRequest, IHttpResponse } from "../../protocols";
-import {
-  IDeleCustomerController,
-  IDeleteCustomerRepository,
-} from "./protocols";
+import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import { IDeleteCustomerRepository } from "./protocols";
 
-export class DeleteCustomerController implements IDeleCustomerController {
+export class DeleteCustomerController implements IController {
   constructor(
     private readonly deleteCustomerRepository: IDeleteCustomerRepository
   ) {}

@@ -1,14 +1,10 @@
 import { ICustomer } from "../../../models/customer";
-import { IHttpRequest, IHttpResponse } from "../../protocols";
-import {
-  ICreateCustomerController,
-  ICreateCustomerParams,
-  ICreateCustomerRepository,
-} from "./protocols";
+import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import { ICreateCustomerParams, ICreateCustomerRepository } from "./protocols";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
-export class CreateCustomerController implements ICreateCustomerController {
+export class CreateCustomerController implements IController {
   constructor(
     private readonly createCustomerRepository: ICreateCustomerRepository
   ) {}

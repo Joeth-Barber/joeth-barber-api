@@ -1,23 +1,26 @@
 import { ICustomer } from "../../../models/customer";
-import { IHttpRequest, IHttpResponse } from "../../protocols";
-import {
-  IUpdateCustomerController,
-  IUpdateCustomerParams,
-  IUpdateCustomerRepository,
-} from "./protocols";
+import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import { IUpdateCustomerParams, IUpdateCustomerRepository } from "./protocols";
 import { hash } from "bcrypt";
 
-export class UpdateCustomerController implements IUpdateCustomerController {
+export class UpdateCustomerController implements IController {
   constructor(
     private readonly updateCustomerRepository: IUpdateCustomerRepository
   ) {}
 
   async handle(
-    httpRequest: IHttpRequest<any>
+    httpRequest: IHttpRequest<IUpdateCustomerParams>
   ): Promise<IHttpResponse<ICustomer>> {
     try {
       const id = httpRequest?.params?.id;
       const body = httpRequest?.body;
+
+      if (!body) {
+        return {
+          statusCode: 400,
+          body: "Missing fields.",
+        };
+      }
 
       if (!id) {
         return {
@@ -32,7 +35,7 @@ export class UpdateCustomerController implements IUpdateCustomerController {
         "password",
       ];
 
-      const someFieldIsNotAllowedToUpdate = Object.keys(body).some(
+      const someFieldIsNotAllowedToUpdate = Object.keys(body!).some(
         (key) =>
           !allowedFieldsToUpdate.includes(key as keyof IUpdateCustomerParams)
       );
