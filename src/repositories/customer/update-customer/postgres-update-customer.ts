@@ -14,7 +14,7 @@ export class PostgresUpdateCustomerRepository
   ): Promise<ICustomer> {
     const customer = await prisma.customer.update({
       where: {
-        id: Number(id),
+        id,
       },
       data: {
         ...params,

@@ -10,6 +10,9 @@ export class PostgresGetCustomersRepository implements IGetCustomersRepository {
       (customerFromDB) => ({
         id: customerFromDB.id,
         full_name: customerFromDB.full_name,
+        nickname: customerFromDB.nickname,
+        isMonthlyPayer: customerFromDB.isMonthlyPayer,
+        debt: customerFromDB.debt,
         email: customerFromDB.email,
         phone_number: customerFromDB.phone_number,
         password: customerFromDB.password,

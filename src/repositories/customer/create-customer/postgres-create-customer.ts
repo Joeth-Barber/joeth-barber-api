@@ -12,6 +12,9 @@ export class PostgresCreateCustomerRepository
     const createdCustomer = await prisma.customer.create({
       data: {
         full_name: params.full_name,
+        nickname: params.nickname,
+        isMonthlyPayer: params.isMonthlyPayer,
+        debt: params.debt,
         email: params.email,
         phone_number: params.phone_number,
         password: params.password,

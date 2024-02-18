@@ -7,7 +7,7 @@ export class PostgresGetCustomerByIdRepository
 {
   async getCustomerById(id: string): Promise<ICustomer> {
     const customer = await prisma.customer.findUnique({
-      where: { id: Number(id) },
+      where: { id },
     });
 
     if (!customer) {

@@ -7,7 +7,7 @@ export class PostgresDeleteCustomerRepository
 {
   async deleteCustomer(id: string): Promise<ICustomer> {
     const customer = await prisma.customer.findUnique({
-      where: { id: Number(id) },
+      where: { id },
     });
 
     if (!customer) {
@@ -15,7 +15,7 @@ export class PostgresDeleteCustomerRepository
     }
 
     await prisma.customer.delete({
-      where: { id: Number(id) },
+      where: { id },
     });
 
     return customer;

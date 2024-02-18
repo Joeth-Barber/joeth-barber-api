@@ -1,7 +1,11 @@
+import { Decimal } from "@prisma/client/runtime/library";
 import { ICustomer } from "../../../models/customer";
 
 export interface ICreateCustomerParams {
   full_name: string;
+  nickname: string;
+  isMonthlyPayer: boolean;
+  debt: Decimal;
   email: string;
   phone_number: string;
   password: string;

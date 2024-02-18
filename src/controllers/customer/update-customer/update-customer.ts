@@ -26,6 +26,9 @@ export class UpdateCustomerController implements IController {
 
       const allowedFieldsToUpdate: (keyof IUpdateCustomerParams)[] = [
         "full_name",
+        "nickname",
+        "isMonthlyPayer",
+        "debt",
         "phone_number",
         "password",
       ];
