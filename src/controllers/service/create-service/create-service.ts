@@ -12,16 +12,15 @@ export class CreateServiceController implements IController {
     httpRequest: IHttpRequest<ICreateServiceParams>
   ): Promise<IHttpResponse<IService | string>> {
     try {
-      const service = httpRequest.body;
+      const body = httpRequest.body;
 
-      if (!service?.name || !service?.description || !service?.price) {
+      if (!body) {
         return badRequest("You must fill the fields before continuing.");
       }
 
-      const newService =
-        await this.createServiceRepository.createService(service);
+      const service = await this.createServiceRepository.createService(body);
 
-      return created<IService>(newService);
+      return created<IService>(service);
     } catch (error) {
       console.log(error);
 

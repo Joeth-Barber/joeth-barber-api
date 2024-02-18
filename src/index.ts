@@ -18,6 +18,8 @@ import { PostgresGetServices } from "./repositories/service/get-service/postgres
 import { GetServicesController } from "./controllers/service/get-services/get-services";
 import { PostgresGetServiceByIdRepository } from "./repositories/service/get-service-by-id/postgres-get-service-by-id";
 import { GetServiceByIdController } from "./controllers/service/get-service-by-id/get-service-by-id";
+import { PostgresUpdateServiceRepository } from "./repositories/service/update-service/postgres-update-service";
+import { UpdateServiceController } from "./controllers/service/update-service/update-service";
 
 config();
 
@@ -144,6 +146,21 @@ app.get("/services/:id", async (req, res) => {
   );
 
   const { body, statusCode } = await getServiceByIdController.handle({
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.patch("/services/:id", async (req, res) => {
+  const postgresUpdateServiceRepository = new PostgresUpdateServiceRepository();
+
+  const updateServiceController = new UpdateServiceController(
+    postgresUpdateServiceRepository
+  );
+
+  const { body, statusCode } = await updateServiceController.handle({
+    body: req.body,
     params: req.params,
   });
 
