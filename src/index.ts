@@ -10,6 +10,12 @@ import { PostgresDeleteCustomerRepository } from "./repositories/customer/delete
 import { DeleteCustomerController } from "./controllers/customer/delete-customer/delete-customer";
 import { PostgresGetCustomerByIdRepository } from "./repositories/customer/get-customer-by-id/postgres-get-customer-by-id";
 import { GetCustomerByIdController } from "./controllers/customer/get-customer-by-id/get-customer-by-id";
+import { PostgresCreateServiceRepository } from "./repositories/service/create-service/postgres-create-service";
+import { CreateServiceController } from "./controllers/service/create-service/create-service";
+import { PostgresDeleteServiceRepository } from "./repositories/service/delete-service/postgres-delete-service";
+import { DeleteServiceController } from "./controllers/service/delete-service/delete.service";
+import { PostgresGetServices } from "./repositories/service/get-service/postgres-get-services";
+import { GetServicesController } from "./controllers/service/get-services/get-services";
 
 config();
 
@@ -85,6 +91,44 @@ app.get("/customers/:id", async (req, res) => {
   const { body, statusCode } = await getCustomerByIdController.handle({
     params: req.params,
   });
+
+  res.status(statusCode).send(body);
+});
+
+app.post("/services", async (req, res) => {
+  const postgresCreateServiceRepository = new PostgresCreateServiceRepository();
+  const createServiceController = new CreateServiceController(
+    postgresCreateServiceRepository
+  );
+
+  const { body, statusCode } = await createServiceController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.delete("/services/:id", async (req, res) => {
+  const postgresDeleteServerRepository = new PostgresDeleteServiceRepository();
+
+  const deleteServiceController = new DeleteServiceController(
+    postgresDeleteServerRepository
+  );
+
+  const { body, statusCode } = await deleteServiceController.handle({
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.get("/services", async (req, res) => {
+  const postgressGetServicesRepository = new PostgresGetServices();
+  const getServicesController = new GetServicesController(
+    postgressGetServicesRepository
+  );
+
+  const { body, statusCode } = await getServicesController.handle();
 
   res.status(statusCode).send(body);
 });
