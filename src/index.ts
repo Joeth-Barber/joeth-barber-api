@@ -16,6 +16,8 @@ import { PostgresDeleteServiceRepository } from "./repositories/service/delete-s
 import { DeleteServiceController } from "./controllers/service/delete-service/delete.service";
 import { PostgresGetServices } from "./repositories/service/get-service/postgres-get-services";
 import { GetServicesController } from "./controllers/service/get-services/get-services";
+import { PostgresGetServiceByIdRepository } from "./repositories/service/get-service-by-id/postgres-get-service-by-id";
+import { GetServiceByIdController } from "./controllers/service/get-service-by-id/get-service-by-id";
 
 config();
 
@@ -129,6 +131,21 @@ app.get("/services", async (req, res) => {
   );
 
   const { body, statusCode } = await getServicesController.handle();
+
+  res.status(statusCode).send(body);
+});
+
+app.get("/services/:id", async (req, res) => {
+  const postgresGetServiceByIdRepository =
+    new PostgresGetServiceByIdRepository();
+
+  const getServiceByIdController = new GetServiceByIdController(
+    postgresGetServiceByIdRepository
+  );
+
+  const { body, statusCode } = await getServiceByIdController.handle({
+    params: req.params,
+  });
 
   res.status(statusCode).send(body);
 });
