@@ -44,11 +44,14 @@ model Booking {
 }
 
 model BookingService {
-  id           Int       @id @default(autoincrement())
   bookingId    String
   serviceId    Int
   booking      Booking   @relation(fields: [bookingId], references: [id])
   service      Service   @relation(fields: [serviceId], references: [id])
+  assignedAt DateTime @default(now())
+  assignedBy String
+
 
   @@map("booking_services")
+  @@id([serviceId, bookingId])
 }
