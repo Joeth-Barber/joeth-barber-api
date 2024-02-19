@@ -20,6 +20,8 @@ import { PostgresGetServiceByIdRepository } from "./repositories/service/get-ser
 import { GetServiceByIdController } from "./controllers/service/get-service-by-id/get-service-by-id";
 import { PostgresUpdateServiceRepository } from "./repositories/service/update-service/postgres-update-service";
 import { UpdateServiceController } from "./controllers/service/update-service/update-service";
+import { PostgresCreateBookingsRepository } from "./repositories/booking/create-booking/postgres-create-booking";
+import { CreateBookingsController } from "./controllers/booking/create-booking/create-booking";
 
 config();
 
@@ -162,6 +164,20 @@ app.patch("/services/:id", async (req, res) => {
   const { body, statusCode } = await updateServiceController.handle({
     body: req.body,
     params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.post("/bookings", async (req, res) => {
+  const postgresCreateBookingsRepository =
+    new PostgresCreateBookingsRepository();
+  const createBookingsRepository = new CreateBookingsController(
+    postgresCreateBookingsRepository
+  );
+
+  const { body, statusCode } = await createBookingsRepository.handle({
+    body: req.body,
   });
 
   res.status(statusCode).send(body);
