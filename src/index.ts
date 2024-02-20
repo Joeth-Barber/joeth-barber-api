@@ -24,6 +24,8 @@ import { PostgresCreateBookingsRepository } from "./repositories/booking/create-
 import { CreateBookingsController } from "./controllers/booking/create-booking/create-booking";
 import { PostgresDeleteBookingsRepository } from "./repositories/booking/delete-bookings/postgres-delete-bookings";
 import { DeleteBookingsController } from "./controllers/booking/delete-booking/delete-bookings";
+import { PostgresGetBookingsRepository } from "./repositories/booking/get-bookings/postgres-get-bookings";
+import { GetBookingsController } from "./controllers/booking/get-bookings/get-bookings";
 
 config();
 
@@ -174,8 +176,10 @@ app.patch("/services/:id", async (req, res) => {
 app.post("/bookings", async (req, res) => {
   const postgresCreateBookingsRepository =
     new PostgresCreateBookingsRepository();
+  const postgresGetBookingsRepository = new PostgresGetBookingsRepository();
   const createBookingsRepository = new CreateBookingsController(
-    postgresCreateBookingsRepository
+    postgresCreateBookingsRepository,
+    postgresGetBookingsRepository
   );
 
   const { body, statusCode } = await createBookingsRepository.handle({
@@ -196,6 +200,17 @@ app.delete("/bookings/:id", async (req, res) => {
   const { body, statusCode } = await deleteBookingsController.handle({
     params: req.params,
   });
+
+  res.status(statusCode).send(body);
+});
+
+app.get("/bookings", async (req, res) => {
+  const postgresGetBookingsRepository = new PostgresGetBookingsRepository();
+  const getBookingsController = new GetBookingsController(
+    postgresGetBookingsRepository
+  );
+
+  const { body, statusCode } = await getBookingsController.handle();
 
   res.status(statusCode).send(body);
 });
