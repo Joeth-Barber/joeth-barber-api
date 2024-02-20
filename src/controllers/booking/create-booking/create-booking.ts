@@ -25,11 +25,32 @@ export class CreateBookingsController implements IController {
       };
 
       const bookings = await this.getBookingRepository.getBookings();
-      const isDateAvailable = bookings.some(
-        (booking) => booking.date === newBooking.date
+
+      const newBookingDate = new Date(newBooking.date);
+      const existingBookingDates = bookings.map(
+        (booking) => new Date(booking.date)
       );
 
-      if (!isDateAvailable) {
+      const truncatedNewBookingDate = new Date(newBookingDate);
+      truncatedNewBookingDate.setSeconds(0);
+
+      const truncatedExistingBookingDates = existingBookingDates.map((date) => {
+        const truncatedDate = new Date(date);
+        truncatedDate.setSeconds(0);
+        return truncatedDate;
+      });
+
+      console.log("New booking date (truncated):", truncatedNewBookingDate);
+      console.log(
+        "Existing booking dates (truncated):",
+        truncatedExistingBookingDates
+      );
+
+      const isDateAlreadyTaken = truncatedExistingBookingDates.some(
+        (date) => truncatedNewBookingDate.getTime() === date.getTime()
+      );
+
+      if (isDateAlreadyTaken) {
         return badRequest("Booking date is already taken.");
       }
 
