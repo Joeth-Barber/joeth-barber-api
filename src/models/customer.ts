@@ -1,6 +1,7 @@
 import { Decimal } from "@prisma/client/runtime/library";
 
 export interface ICustomer {
+  id: string;
   full_name: string;
   nickname: string;
   isMonthlyPayer: boolean | null;

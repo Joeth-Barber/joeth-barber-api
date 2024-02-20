@@ -26,6 +26,8 @@ import { PostgresDeleteBookingsRepository } from "./repositories/booking/delete-
 import { DeleteBookingsController } from "./controllers/booking/delete-booking/delete-bookings";
 import { PostgresGetBookingsRepository } from "./repositories/booking/get-bookings/postgres-get-bookings";
 import { GetBookingsController } from "./controllers/booking/get-bookings/get-bookings";
+import { PostgresGetBookingByIdRepository } from "./repositories/booking/get-booking-by-id/postgres-get-booking-by-id";
+import { GetBookingByIdController } from "./controllers/booking/get-booking-by-id/get-booking-by-id";
 
 config();
 
@@ -211,6 +213,21 @@ app.get("/bookings", async (req, res) => {
   );
 
   const { body, statusCode } = await getBookingsController.handle();
+
+  res.status(statusCode).send(body);
+});
+
+app.get("/bookings/:id", async (req, res) => {
+  const postgresGetBookingByIdRepository =
+    new PostgresGetBookingByIdRepository();
+
+  const getBookingByIdController = new GetBookingByIdController(
+    postgresGetBookingByIdRepository
+  );
+
+  const { body, statusCode } = await getBookingByIdController.handle({
+    params: req.params,
+  });
 
   res.status(statusCode).send(body);
 });

@@ -12,6 +12,14 @@ export class PostgresCreateBookingsRepository
     params: ICreateBookingsParams
   ): Promise<IBookings | undefined> {
     try {
+      const customer = await prisma.customer.findUnique({
+        where: { id: params.customerId },
+      });
+
+      if (!customer) {
+        throw new Error("Customer not found.");
+      }
+
       const createBooking = await prisma.booking.create({
         data: {
           customerId: params.customerId,
@@ -19,16 +27,14 @@ export class PostgresCreateBookingsRepository
           services: {
             create: params.services.map((serviceId) => ({
               assignedBy: params.customerId,
-              service: {
-                connect: { id: parseInt(serviceId) },
-              },
+              service: { connect: { id: parseInt(serviceId) } },
             })),
           },
         },
       });
 
       if (!createBooking.id) {
-        throw new Error("Erro ao criar reserva. ID da reserva não definido.");
+        throw new Error("Missing booking id.");
       }
 
       const bookingServices = await prisma.bookingService.findMany({
@@ -47,6 +53,7 @@ export class PostgresCreateBookingsRepository
             description: bookingService.service.description,
             price: bookingService.service.price,
           })),
+          customer,
         };
 
         return booking;

@@ -25,6 +25,7 @@ export class PostgresGetBookingsRepository implements IGetBookingsRepository {
         nickname: bookingFromDB.customer.nickname,
         email: bookingFromDB.customer.email,
         phone_number: bookingFromDB.customer.phone_number,
+        password: bookingFromDB.customer.password,
         isMonthlyPayer: bookingFromDB.customer.isMonthlyPayer,
         debt: bookingFromDB.customer.debt,
       },

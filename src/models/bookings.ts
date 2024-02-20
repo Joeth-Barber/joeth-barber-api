@@ -1,3 +1,4 @@
+import { ICustomer } from "./customer";
 import { IService } from "./service";
 
 export interface IBookings {
@@ -5,4 +6,5 @@ export interface IBookings {
   customerId: string;
   date: Date;
   services: IService[];
+  customer: ICustomer;
 }
