@@ -22,8 +22,6 @@ export class PostgresDeleteBookingsRepository
       },
     });
 
-    console.log(booking);
-
     if (!booking) {
       throw new Error("Booking not found.");
     }

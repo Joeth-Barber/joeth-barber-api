@@ -22,6 +22,7 @@ export class DeleteCustomerController implements IController {
 
       return ok<ICustomer>(customer);
     } catch (error) {
+      console.log(error);
       return serverError();
     }
   }
