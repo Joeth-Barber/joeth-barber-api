@@ -40,12 +40,6 @@ export class CreateBookingsController implements IController {
         return truncatedDate;
       });
 
-      console.log("New booking date (truncated):", truncatedNewBookingDate);
-      console.log(
-        "Existing booking dates (truncated):",
-        truncatedExistingBookingDates
-      );
-
       const isDateAlreadyTaken = truncatedExistingBookingDates.some(
         (date) => truncatedNewBookingDate.getTime() === date.getTime()
       );

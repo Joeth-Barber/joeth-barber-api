@@ -28,6 +28,8 @@ import { PostgresGetBookingsRepository } from "./repositories/booking/get-bookin
 import { GetBookingsController } from "./controllers/booking/get-bookings/get-bookings";
 import { PostgresGetBookingByIdRepository } from "./repositories/booking/get-booking-by-id/postgres-get-booking-by-id";
 import { GetBookingByIdController } from "./controllers/booking/get-booking-by-id/get-booking-by-id";
+import { PostgresUpdateBookingRepository } from "./repositories/booking/update-booking/postgres-update-booking";
+import { UpdateBookingController } from "./controllers/booking/update-booking/update-booking";
 
 config();
 
@@ -226,6 +228,23 @@ app.get("/bookings/:id", async (req, res) => {
   );
 
   const { body, statusCode } = await getBookingByIdController.handle({
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.patch("/bookings/:id", async (req, res) => {
+  const postgresUpdateBookingRepository = new PostgresUpdateBookingRepository();
+  const postgresGetBookingsRepository = new PostgresGetBookingsRepository();
+
+  const updateBookingController = new UpdateBookingController(
+    postgresUpdateBookingRepository,
+    postgresGetBookingsRepository
+  );
+
+  const { body, statusCode } = await updateBookingController.handle({
+    body: req.body,
     params: req.params,
   });
 
