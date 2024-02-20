@@ -11,6 +11,7 @@ export class PostgresGetBookingsRepository implements IGetBookingsRepository {
             service: true,
           },
         },
+        customer: true,
       },
     });
 
@@ -18,6 +19,15 @@ export class PostgresGetBookingsRepository implements IGetBookingsRepository {
       id: bookingFromDB.id,
       customerId: bookingFromDB.customerId,
       date: bookingFromDB.date,
+      customer: {
+        id: bookingFromDB.customer.id,
+        full_name: bookingFromDB.customer.full_name,
+        nickname: bookingFromDB.customer.nickname,
+        email: bookingFromDB.customer.email,
+        phone_number: bookingFromDB.customer.phone_number,
+        isMonthlyPayer: bookingFromDB.customer.isMonthlyPayer,
+        debt: bookingFromDB.customer.debt,
+      },
       services: bookingFromDB.services.map((bookingService) => ({
         id: bookingService.service.id.toString(),
         name: bookingService.service.name,
