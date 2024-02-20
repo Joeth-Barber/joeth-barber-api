@@ -22,6 +22,8 @@ import { PostgresUpdateServiceRepository } from "./repositories/service/update-s
 import { UpdateServiceController } from "./controllers/service/update-service/update-service";
 import { PostgresCreateBookingsRepository } from "./repositories/booking/create-booking/postgres-create-booking";
 import { CreateBookingsController } from "./controllers/booking/create-booking/create-booking";
+import { PostgresDeleteBookingsRepository } from "./repositories/booking/delete-bookings/postgres-delete-bookings";
+import { DeleteBookingsController } from "./controllers/booking/delete-booking/delete-bookings";
 
 config();
 
@@ -178,6 +180,21 @@ app.post("/bookings", async (req, res) => {
 
   const { body, statusCode } = await createBookingsRepository.handle({
     body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+app.delete("/bookings/:id", async (req, res) => {
+  const postgresDeleteBookingsRepository =
+    new PostgresDeleteBookingsRepository();
+
+  const deleteBookingsController = new DeleteBookingsController(
+    postgresDeleteBookingsRepository
+  );
+
+  const { body, statusCode } = await deleteBookingsController.handle({
+    params: req.params,
   });
 
   res.status(statusCode).send(body);
