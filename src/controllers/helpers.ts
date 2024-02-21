@@ -17,6 +17,13 @@ export const badRequest = (message: string): IHttpResponse<string> => {
   };
 };
 
+export const unauthorized = (message: string): IHttpResponse<string> => {
+  return {
+    statusCode: HttpStatusCode.UNAUTHORIZED,
+    body: message,
+  };
+};
+
 export const serverError = (): IHttpResponse<string> => {
   return {
     statusCode: HttpStatusCode.SERVER_ERROR,
