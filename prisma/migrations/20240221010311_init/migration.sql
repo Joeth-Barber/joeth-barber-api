@@ -6,8 +6,8 @@ CREATE TABLE "customers" (
     "email" TEXT NOT NULL,
     "phone_number" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "isMonthlyPayer" BOOLEAN,
-    "debt" DECIMAL(10,2),
+    "isMonthlyPayer" BOOLEAN NOT NULL,
+    "debt" DECIMAL(10,2) NOT NULL,
 
     CONSTRAINT "customers_pkey" PRIMARY KEY ("id")
 );
@@ -33,11 +33,12 @@ CREATE TABLE "bookings" (
 
 -- CreateTable
 CREATE TABLE "booking_services" (
-    "id" SERIAL NOT NULL,
     "bookingId" TEXT NOT NULL,
     "serviceId" INTEGER NOT NULL,
+    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "assignedBy" TEXT NOT NULL,
 
-    CONSTRAINT "booking_services_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "booking_services_pkey" PRIMARY KEY ("serviceId","bookingId")
 );
 
 -- CreateIndex

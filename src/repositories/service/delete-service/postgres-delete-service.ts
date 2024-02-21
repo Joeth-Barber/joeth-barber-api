@@ -16,6 +16,18 @@ export class PostgresDeleteServiceRepository
       throw new Error("Service not found.");
     }
 
+    const bookingsWithService = await prisma.bookingService.findMany({
+      where: {
+        serviceId: Number(id),
+      },
+    });
+
+    if (bookingsWithService.length > 0) {
+      throw new Error(
+        "Cannot delete service because it is associated with a booking."
+      );
+    }
+
     await prisma.service.delete({
       where: { id: Number(id) },
     });

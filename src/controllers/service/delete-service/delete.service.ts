@@ -12,7 +12,9 @@ export class DeleteServiceController implements IController {
     httpRequest: IHttpRequest<any>
   ): Promise<IHttpResponse<IService | string>> {
     try {
-      const id = httpRequest.params?.id;
+      const id = httpRequest?.params?.id;
+
+      console.log("service id: ", id);
 
       if (!id) {
         return badRequest("Missing service Id.");
@@ -22,6 +24,7 @@ export class DeleteServiceController implements IController {
 
       return ok<IService>(service);
     } catch (error) {
+      console.log(error);
       return serverError();
     }
   }

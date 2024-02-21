@@ -9,4 +9,5 @@ export interface ICustomer {
   email: string;
   phone_number: string;
   password: string;
+  token?: string;
 }

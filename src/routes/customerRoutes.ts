@@ -9,20 +9,12 @@ import { PostgresCreateCustomerRepository } from "../repositories/customer/creat
 import { PostgresDeleteCustomerRepository } from "../repositories/customer/delete-customer/postgres-delete-customer";
 import { PostgresGetCustomerByIdRepository } from "../repositories/customer/get-customer-by-id/postgres-get-customer-by-id";
 import { PostgresUpdateCustomerRepository } from "../repositories/customer/update-customer/postgres-update-customer";
+import { PostgresCustomerLoginRepository } from "../repositories/customer/customer-login/postgres-customer-login";
+import { CustomerLoginController } from "../controllers/customer/customer-login/customer-login";
+import verifyToken from "../middlewares/verifyToken";
 
 const customerRouter = express.Router();
 customerRouter.use(express.json());
-
-customerRouter.get("/", async (req, res) => {
-  const postgresGetCustomersRepository = new PostgresGetCustomersRepository();
-  const getCustomersController = new GetCustomersController(
-    postgresGetCustomersRepository
-  );
-
-  const { body, statusCode } = await getCustomersController.handle();
-
-  res.status(statusCode).send(body);
-});
 
 customerRouter.post("/", async (req, res) => {
   const postgresCreateCustomerRepository =
@@ -34,6 +26,32 @@ customerRouter.post("/", async (req, res) => {
   const { body, statusCode } = await createCustomerController.handle({
     body: req.body,
   });
+
+  res.status(statusCode).send(body);
+});
+
+customerRouter.post("/login", async (req, res) => {
+  const postgresCustomerLoginRepository = new PostgresCustomerLoginRepository();
+  const customerLoginController = new CustomerLoginController(
+    postgresCustomerLoginRepository
+  );
+
+  const { body, statusCode } = await customerLoginController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+customerRouter.use(verifyToken);
+
+customerRouter.get("/", async (req, res) => {
+  const postgresGetCustomersRepository = new PostgresGetCustomersRepository();
+  const getCustomersController = new GetCustomersController(
+    postgresGetCustomersRepository
+  );
+
+  const { body, statusCode } = await getCustomersController.handle();
 
   res.status(statusCode).send(body);
 });

@@ -14,9 +14,9 @@ export class CreateBookingsController implements IController {
     httpRequest: IHttpRequest<ICreateBookingsParams>
   ): Promise<IHttpResponse<IBookings | string>> {
     try {
-      const isEmptyBookings = httpRequest.body!.services.length === 0;
+      const isServicesBookings = httpRequest.body!.services.length > 0;
 
-      if (isEmptyBookings) {
+      if (!isServicesBookings) {
         return badRequest("Services is empty.");
       }
 

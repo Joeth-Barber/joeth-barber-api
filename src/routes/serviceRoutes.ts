@@ -9,9 +9,12 @@ import { PostgresDeleteServiceRepository } from "../repositories/service/delete-
 import { PostgresGetServiceByIdRepository } from "../repositories/service/get-service-by-id/postgres-get-service-by-id";
 import { PostgresGetServices } from "../repositories/service/get-service/postgres-get-services";
 import { PostgresUpdateServiceRepository } from "../repositories/service/update-service/postgres-update-service";
+import verifyToken from "../middlewares/verifyToken";
 
 const serviceRouter = express.Router();
 serviceRouter.use(express.json());
+
+serviceRouter.use(verifyToken);
 
 serviceRouter.post("/", async (req, res) => {
   const postgresCreateServiceRepository = new PostgresCreateServiceRepository();

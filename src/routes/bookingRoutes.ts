@@ -9,9 +9,12 @@ import { PostgresDeleteBookingsRepository } from "../repositories/booking/delete
 import { PostgresGetBookingByIdRepository } from "../repositories/booking/get-booking-by-id/postgres-get-booking-by-id";
 import { PostgresGetBookingsRepository } from "../repositories/booking/get-bookings/postgres-get-bookings";
 import { PostgresUpdateBookingRepository } from "../repositories/booking/update-booking/postgres-update-booking";
+import verifyToken from "../middlewares/verifyToken";
 
 const bookingRouter = express.Router();
 bookingRouter.use(express.json());
+
+bookingRouter.use(verifyToken);
 
 bookingRouter.post("/", async (req, res) => {
   const postgresCreateBookingsRepository =

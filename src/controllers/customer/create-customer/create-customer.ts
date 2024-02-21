@@ -3,7 +3,12 @@ import { badRequest, created, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { ICreateCustomerParams, ICreateCustomerRepository } from "./protocols";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import validator from "validator";
+import { config } from "dotenv";
+
+config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export class CreateCustomerController implements IController {
   constructor(
@@ -30,7 +35,15 @@ export class CreateCustomerController implements IController {
       const customer =
         await this.createCustomerRepository.createCustomer(newCustomer);
 
-      return created<ICustomer>(customer);
+      const token = jwt.sign(
+        { customerId: customer.id },
+        JWT_SECRET || "JOETHBARBERPROJECT",
+        {
+          expiresIn: "48h",
+        }
+      );
+
+      return created<ICustomer>(token);
     } catch (error) {
       console.log(error);
 
