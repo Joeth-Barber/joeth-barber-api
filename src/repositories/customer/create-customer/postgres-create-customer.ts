@@ -11,6 +11,7 @@ export class PostgresCreateCustomerRepository
   async createCustomer(params: ICreateCustomerParams): Promise<ICustomer> {
     const createdCustomer = await prisma.customer.create({
       data: {
+        isAdmin: params.isAdmin || false,
         full_name: params.full_name,
         nickname: params.nickname,
         isMonthlyPayer: params.isMonthlyPayer,

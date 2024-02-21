@@ -9,6 +9,7 @@ export class PostgresGetCustomersRepository implements IGetCustomersRepository {
     const customers: ICustomer[] = customersFromDatabase.map(
       (customerFromDB) => ({
         id: customerFromDB.id,
+        isAdmin: customerFromDB.isAdmin,
         full_name: customerFromDB.full_name,
         nickname: customerFromDB.nickname,
         isMonthlyPayer: customerFromDB.isMonthlyPayer,

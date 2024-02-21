@@ -11,47 +11,47 @@ datasource db {
 
 model Customer {
   id             String    @id @default(uuid())
+  isAdmin        Boolean
   full_name      String
   nickname       String
   email          String    @unique
   phone_number   String    @unique
   password       String
   isMonthlyPayer Boolean
-  debt           Decimal  @db.Decimal(10, 2)
+  debt           Decimal   @db.Decimal(10, 2)
   bookings       Booking[]
 
   @@map("customers")
 }
 
 model Service {
-  id           Int       @id @default(autoincrement())
-  name         String
-  description  String
-  price        Decimal   @db.Decimal(10, 2)
-  bookings     BookingService[]
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  price       Decimal          @db.Decimal(10, 2)
+  bookings    BookingService[]
 
   @@map("services")
 }
 
 model Booking {
-  id           String      @id @default(uuid())
-  customerId   String
-  date         DateTime
-  customer     Customer    @relation(fields: [customerId], references: [id])
-  services     BookingService[]
+  id         String           @id @default(uuid())
+  customerId String
+  date       DateTime
+  customer   Customer         @relation(fields: [customerId], references: [id])
+  services   BookingService[]
 
   @@map("bookings")
 }
 
 model BookingService {
-  bookingId    String
-  serviceId    Int
-  booking      Booking   @relation(fields: [bookingId], references: [id])
-  service      Service   @relation(fields: [serviceId], references: [id])
+  bookingId  String
+  serviceId  Int
+  booking    Booking  @relation(fields: [bookingId], references: [id])
+  service    Service  @relation(fields: [serviceId], references: [id])
   assignedAt DateTime @default(now())
   assignedBy String
 
-
-  @@map("booking_services")
   @@id([serviceId, bookingId])
+  @@map("booking_services")
 }

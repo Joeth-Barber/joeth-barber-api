@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "customers" (
     "id" TEXT NOT NULL,
+    "isAdmin" BOOLEAN NOT NULL,
     "full_name" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
     "email" TEXT NOT NULL,

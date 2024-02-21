@@ -35,6 +35,7 @@ export class PostgresGetBookingByIdRepository
 
     const mappedCustomer: ICustomer = {
       id: booking.customer.id.toString(),
+      isAdmin: booking.customer.isAdmin,
       full_name: booking.customer.full_name,
       nickname: booking.customer.nickname,
       email: booking.customer.email,
