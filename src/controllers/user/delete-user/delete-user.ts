@@ -3,6 +3,7 @@ import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { IDeleteUserRepository } from "./protocols";
 
+//TODO: Fazer as validações de Deleção para Admin
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserRepository: IDeleteUserRepository) {}
 

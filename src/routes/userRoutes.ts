@@ -3,7 +3,7 @@ import express from "express";
 import verifyToken from "../middlewares/verifyToken";
 
 import { PostgresCreateUserRepository } from "../repositories/user/create-user/postgres-create-user";
-import { PostgresUserLoginRepository } from "../repositories/user/customer-login/postgres-user-login";
+import { PostgresUserLoginRepository } from "../repositories/user/user-login/postgres-user-login";
 import { PostgresDeleteUserRepository } from "../repositories/user/delete-user/postgres-delete-user";
 import { PostgresGetUserByIdRepository } from "../repositories/user/get-user-by-id/postgres-get-user-by-id";
 import { PostgresGetUsersRepository } from "../repositories/user/get-user/postgres-get-user";
@@ -18,7 +18,7 @@ import { UserLoginController } from "../controllers/user/user-login/user-login";
 const userRouter = express.Router();
 userRouter.use(express.json());
 
-userRouter.post("/", async (req, res) => {
+userRouter.post("/register", async (req, res) => {
   const postgresCreateUserRepository = new PostgresCreateUserRepository();
   const createUserController = new CreateUserController(
     postgresCreateUserRepository
@@ -57,9 +57,11 @@ userRouter.get("/", async (req, res) => {
 
 userRouter.patch("/:id", async (req, res) => {
   const postgresUpdateUserRepository = new PostgresUpdateUserRepository();
+  const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
 
   const updateUserController = new UpdateUserController(
-    postgresUpdateUserRepository
+    postgresUpdateUserRepository,
+    postgresGetUserByIdRepository
   );
 
   const { body, statusCode } = await updateUserController.handle({

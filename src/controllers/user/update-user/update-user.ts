@@ -1,11 +1,19 @@
 import { IUser } from "../../../models/user";
 import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import { IGetUserByIdRepository } from "../get-user-by-id/protocols";
 import { IUpdateUserParams, IUpdateUserRepository } from "./protocols";
 import { hash } from "bcrypt";
+import { config } from "dotenv";
+
+config();
+const ADMIN_ROLE = process.env.ADMIN_ROLE || "";
 
 export class UpdateUserController implements IController {
-  constructor(private readonly updateUserRepository: IUpdateUserRepository) {}
+  constructor(
+    private readonly updateUserRepository: IUpdateUserRepository,
+    private readonly getUserByIdRepository: IGetUserByIdRepository
+  ) {}
 
   async handle(
     httpRequest: IHttpRequest<IUpdateUserParams>
@@ -22,14 +30,28 @@ export class UpdateUserController implements IController {
         return badRequest("Missing user id.");
       }
 
-      const allowedFieldsToUpdate: (keyof IUpdateUserParams)[] = [
-        "full_name",
-        "nickname",
-        "isMonthlyPayer",
-        "debt",
-        "phone_number",
-        "password",
-      ];
+      const userById = await this.getUserByIdRepository.getUserById(id);
+
+      let allowedFieldsToUpdate: (keyof IUpdateUserParams)[];
+
+      if (userById.role === ADMIN_ROLE) {
+        allowedFieldsToUpdate = [
+          "full_name",
+          "nickname",
+          "email",
+          "isMonthlyPayer",
+          "debt",
+          "phone_number",
+          "password",
+        ];
+      } else {
+        allowedFieldsToUpdate = [
+          "full_name",
+          "nickname",
+          "phone_number",
+          "password",
+        ];
+      }
 
       const someFieldIsNotAllowedToUpdate = Object.keys(body!).some(
         (key) => !allowedFieldsToUpdate.includes(key as keyof IUpdateUserParams)

@@ -4,6 +4,7 @@ import { IUser } from "../../../models/user";
 export interface IUpdateUserParams {
   full_name?: string;
   nickname?: string;
+  email?: string;
   isMonthlyPayer?: boolean;
   debt?: Decimal;
   phone_number?: string;
