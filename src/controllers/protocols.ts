@@ -20,3 +20,9 @@ export enum HttpStatusCode {
 export interface IController {
   handle(httpRequest: IHttpRequest<unknown>): Promise<IHttpResponse<unknown>>;
 }
+
+export interface IUserBody {
+  id: string;
+  role: string;
+  token: string;
+}

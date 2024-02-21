@@ -1,13 +1,15 @@
+import { createToken } from "../../../middlewares/createToken";
 import { IUser } from "../../../models/user";
 import { ok, serverError, unauthorized } from "../../helpers";
-import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import {
+  IController,
+  IHttpRequest,
+  IHttpResponse,
+  IUserBody,
+} from "../../protocols";
 import { IUserLoginRepository } from "./protocols";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { config } from "dotenv";
 
-config();
-const JWT_SECRET = process.env.JWT_SECRET;
+import bcrypt from "bcrypt";
 
 export class UserLoginController implements IController {
   constructor(private readonly userLoginRepository: IUserLoginRepository) {}
@@ -32,17 +34,15 @@ export class UserLoginController implements IController {
         return unauthorized("Invalid email or password.");
       }
 
-      // TODO: mover esta criação de token para um arquivo helper
+      const token = createToken(user);
 
-      const token = jwt.sign(
-        { userId: user.id },
-        JWT_SECRET || "JOETHBARBERPROJECT",
-        {
-          expiresIn: "48h",
-        }
-      );
+      const authenticatedUser: IUserBody = {
+        id: user.id,
+        role: user.role,
+        token: token,
+      };
 
-      return ok<IUser>(token);
+      return ok<IUser>(authenticatedUser);
     } catch (error) {
       console.log(error);
       return serverError();

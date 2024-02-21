@@ -1,14 +1,15 @@
 import { IUser } from "../../../models/user";
 import { badRequest, created, serverError } from "../../helpers";
-import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
+import {
+  IController,
+  IHttpRequest,
+  IHttpResponse,
+  IUserBody,
+} from "../../protocols";
 import { ICreateUserParams, ICreateUserRepository } from "./protocols";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import validator from "validator";
-import { config } from "dotenv";
-
-config();
-const JWT_SECRET = process.env.JWT_SECRET;
+import { createToken } from "../../../middlewares/createToken";
 
 export class CreateUserController implements IController {
   constructor(private readonly createUserRepository: ICreateUserRepository) {}
@@ -33,17 +34,20 @@ export class CreateUserController implements IController {
       const user = await this.createUserRepository.createUser(newUser);
 
       // TODO: mover esta criação de token para um arquivo helper
+      const token = createToken(user);
 
-      const token = jwt.sign(
-        { userId: user.id },
-        JWT_SECRET || "JOETHBARBERPROJECT",
-        {
-          expiresIn: "48h",
-        }
-      );
+      /* TODO: fazer uma requisição via token recebido pelo usuário para ver se
+       o user é adm */
 
-      return created<IUser>(token);
+      const authenticatedUser: IUserBody = {
+        id: user.id,
+        role: user.role,
+        token: token,
+      };
+
+      return created<IUser>(authenticatedUser);
     } catch (error) {
+      console.log(error);
       return serverError();
     }
   }
