@@ -27,6 +27,6 @@ export const unauthorized = (message: string): IHttpResponse<string> => {
 export const serverError = (): IHttpResponse<string> => {
   return {
     statusCode: HttpStatusCode.SERVER_ERROR,
-    body: "Something went wrong",
+    body: "Something went wrong.",
   };
 };

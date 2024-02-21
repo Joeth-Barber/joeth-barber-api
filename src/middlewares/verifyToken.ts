@@ -15,7 +15,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET || "JOETHBARBERPROJECT");
-    req["customer"] = decoded;
+    req["user"] = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });

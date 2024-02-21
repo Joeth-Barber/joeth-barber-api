@@ -1,7 +1,7 @@
 import { IDeleteBookingsRepository } from "../../../controllers/booking/delete-booking/protocols";
 import { prisma } from "../../../database/postgres";
 import { IBookings } from "../../../models/bookings";
-import { ICustomer } from "../../../models/customer";
+import { IUser } from "../../../models/user";
 import { IService } from "../../../models/service";
 
 export class PostgresDeleteBookingsRepository
@@ -18,7 +18,7 @@ export class PostgresDeleteBookingsRepository
             service: true,
           },
         },
-        customer: true,
+        user: true,
       },
     });
 
@@ -35,16 +35,16 @@ export class PostgresDeleteBookingsRepository
       })
     );
 
-    const mappedCustomer: ICustomer = {
-      id: booking.customer.id.toString(),
-      isAdmin: booking.customer.isAdmin,
-      full_name: booking.customer.full_name,
-      nickname: booking.customer.nickname,
-      email: booking.customer.email,
-      phone_number: booking.customer.phone_number,
-      password: booking.customer.password,
-      isMonthlyPayer: booking.customer.isMonthlyPayer,
-      debt: booking.customer.debt,
+    const mappedUser: IUser = {
+      id: booking.user.id.toString(),
+      role: booking.user.role,
+      full_name: booking.user.full_name,
+      nickname: booking.user.nickname,
+      email: booking.user.email,
+      phone_number: booking.user.phone_number,
+      password: booking.user.password,
+      isMonthlyPayer: booking.user.isMonthlyPayer,
+      debt: booking.user.debt,
     };
 
     await prisma.bookingService.deleteMany({
@@ -61,10 +61,10 @@ export class PostgresDeleteBookingsRepository
 
     return {
       id: booking.id,
-      customerId: booking.customerId,
+      userId: booking.userId,
       date: booking.date,
       services: mappedServices,
-      customer: mappedCustomer,
+      user: mappedUser,
     };
   }
 }

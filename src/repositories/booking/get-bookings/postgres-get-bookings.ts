@@ -11,24 +11,24 @@ export class PostgresGetBookingsRepository implements IGetBookingsRepository {
             service: true,
           },
         },
-        customer: true,
+        user: true,
       },
     });
 
     const bookings: IBookings[] = bookingsFromDatabase.map((bookingFromDB) => ({
       id: bookingFromDB.id,
-      customerId: bookingFromDB.customerId,
+      userId: bookingFromDB.userId,
       date: bookingFromDB.date,
-      customer: {
-        id: bookingFromDB.customer.id,
-        isAdmin: bookingFromDB.customer.isAdmin,
-        full_name: bookingFromDB.customer.full_name,
-        nickname: bookingFromDB.customer.nickname,
-        email: bookingFromDB.customer.email,
-        phone_number: bookingFromDB.customer.phone_number,
-        password: bookingFromDB.customer.password,
-        isMonthlyPayer: bookingFromDB.customer.isMonthlyPayer,
-        debt: bookingFromDB.customer.debt,
+      user: {
+        id: bookingFromDB.user.id,
+        role: bookingFromDB.user.role,
+        full_name: bookingFromDB.user.full_name,
+        nickname: bookingFromDB.user.nickname,
+        email: bookingFromDB.user.email,
+        phone_number: bookingFromDB.user.phone_number,
+        password: bookingFromDB.user.password,
+        isMonthlyPayer: bookingFromDB.user.isMonthlyPayer,
+        debt: bookingFromDB.user.debt,
       },
       services: bookingFromDB.services.map((bookingService) => ({
         id: bookingService.service.id.toString(),

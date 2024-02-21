@@ -18,7 +18,7 @@ export class UpdateBookingController implements IController {
       const body = httpRequest?.body;
 
       if (!id) {
-        return badRequest("Missing customer id.");
+        return badRequest("Missing user id.");
       }
 
       if (!body) {

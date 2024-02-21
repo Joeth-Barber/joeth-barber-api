@@ -1,7 +1,7 @@
 import { IBookings } from "../../../models/bookings";
 
 export interface ICreateBookingsParams {
-  customerId: string;
+  userId: string;
   date: Date;
   services: string[];
 }

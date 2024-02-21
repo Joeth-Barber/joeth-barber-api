@@ -25,7 +25,7 @@ export class PostgresUpdateBookingRepository
 
     const mappedBooking: IBookings = {
       id: updatedBooking.id,
-      customerId: updatedBooking.customerId,
+      userId: updatedBooking.userId,
       date: updatedBooking.date,
     };
 

@@ -9,9 +9,9 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Customer {
+model User {
   id             String    @id @default(uuid())
-  isAdmin        Boolean
+  role        String
   full_name      String
   nickname       String
   email          String    @unique
@@ -21,7 +21,7 @@ model Customer {
   debt           Decimal   @db.Decimal(10, 2)
   bookings       Booking[]
 
-  @@map("customers")
+  @@map("users")
 }
 
 model Service {
@@ -36,9 +36,9 @@ model Service {
 
 model Booking {
   id         String           @id @default(uuid())
-  customerId String
+  userId String
   date       DateTime
-  customer   Customer         @relation(fields: [customerId], references: [id])
+  user   User         @relation(fields: [userId], references: [id])
   services   BookingService[]
 
   @@map("bookings")
@@ -54,4 +54,13 @@ model BookingService {
 
   @@id([serviceId, bookingId])
   @@map("booking_services")
+}
+
+model CalendarMonth {
+  id String @id @default(uuid())
+  notWorkingDays String[]
+  month DateTime
+  workHourRange String[]
+
+  @@map("calendar_months")
 }

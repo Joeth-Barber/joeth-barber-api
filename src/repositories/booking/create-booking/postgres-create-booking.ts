@@ -12,21 +12,21 @@ export class PostgresCreateBookingsRepository
     params: ICreateBookingsParams
   ): Promise<IBookings | undefined> {
     try {
-      const customer = await prisma.customer.findUnique({
-        where: { id: params.customerId },
+      const user = await prisma.user.findUnique({
+        where: { id: params.userId },
       });
 
-      if (!customer) {
-        throw new Error("Customer not found.");
+      if (!user) {
+        throw new Error("User not found.");
       }
 
       const createBooking = await prisma.booking.create({
         data: {
-          customerId: params.customerId,
+          userId: params.userId,
           date: params.date,
           services: {
             create: params.services.map((serviceId) => ({
-              assignedBy: params.customerId,
+              assignedBy: params.userId,
               service: { connect: { id: parseInt(serviceId) } },
             })),
           },
@@ -45,7 +45,7 @@ export class PostgresCreateBookingsRepository
       if (bookingServices && bookingServices.length > 0) {
         const booking: IBookings = {
           id: createBooking.id,
-          customerId: createBooking.customerId,
+          userId: createBooking.userId,
           date: createBooking.date,
           services: bookingServices.map((bookingService) => ({
             id: bookingService.service.id,
@@ -53,7 +53,7 @@ export class PostgresCreateBookingsRepository
             description: bookingService.service.description,
             price: bookingService.service.price,
           })),
-          customer,
+          user,
         };
 
         return booking;

@@ -2,7 +2,7 @@ import { IBookings } from "../../../models/bookings";
 
 export interface IUpdateBookingParams {
   id?: string;
-  customerId?: string;
+  userId?: string;
   date?: Date;
   services?: {
     connect?: { id: number }[];
