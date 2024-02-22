@@ -12,6 +12,9 @@ export class GetBookingsController implements IController {
 
       return ok<IBookings[]>(bookings);
     } catch (error) {
+      if (error instanceof Error) {
+        return serverError(error.message);
+      }
       return serverError();
     }
   }

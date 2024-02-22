@@ -24,9 +24,11 @@ export const unauthorized = (message: string): IHttpResponse<string> => {
   };
 };
 
-export const serverError = (): IHttpResponse<string> => {
+export const serverError = (
+  message: string = "Error not treated."
+): IHttpResponse<string> => {
   return {
     statusCode: HttpStatusCode.SERVER_ERROR,
-    body: "Something went wrong.",
+    body: message,
   };
 };

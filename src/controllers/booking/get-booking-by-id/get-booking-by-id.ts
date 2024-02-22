@@ -22,7 +22,9 @@ export class GetBookingByIdController implements IController {
 
       return ok<IBookings>(booking);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        return serverError(error.message);
+      }
       return serverError();
     }
   }

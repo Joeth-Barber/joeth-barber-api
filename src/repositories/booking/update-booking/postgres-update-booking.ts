@@ -12,7 +12,13 @@ export class PostgresUpdateBookingRepository
     id: string,
     params: IUpdateBookingParams
   ): Promise<IBookings> {
-    const data = {} as any;
+    const bookingById = await prisma.booking.findUnique({
+      where: { id },
+    });
+
+    const data = {
+      date: bookingById?.date,
+    };
 
     if (params.date) {
       data.date = params.date;

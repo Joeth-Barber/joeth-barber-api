@@ -25,7 +25,10 @@ export class UpdateBookingController implements IController {
         return badRequest("Missing fields.");
       }
 
-      const allowedFieldsToUpdate: (keyof IUpdateBookingParams)[] = ["date"];
+      const allowedFieldsToUpdate: (keyof IUpdateBookingParams)[] = [
+        "date",
+        "services",
+      ];
 
       const someFieldIsNotAllowedToUpdate = Object.keys(body!).some(
         (key) =>
@@ -61,7 +64,9 @@ export class UpdateBookingController implements IController {
 
       return ok<IBookings>(booking);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        return serverError(error.message);
+      }
       return serverError();
     }
   }
