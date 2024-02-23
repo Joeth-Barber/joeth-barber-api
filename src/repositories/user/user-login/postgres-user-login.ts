@@ -13,10 +13,11 @@ export class PostgresUserLoginRepository implements IUserLoginRepository {
   async userLogin(params: IUserLoginParams): Promise<IUser> {
     const { email } = params;
 
-    const userCustomer = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
-    if (!userCustomer) {
+
+    if (!user) {
       const userAdmin = await prisma.user.findUnique({
         where: { email: email, role: ADMIN_ROLE },
       });

@@ -20,6 +20,28 @@ export class CreateUserController implements IController {
     try {
       const emailIsValid = validator.isEmail(httpRequest.body!.email);
 
+      const body = httpRequest.body;
+
+      if (!body?.full_name) {
+        return badRequest("full_name field field is missing.");
+      }
+
+      if (!body?.nickname) {
+        return badRequest("nickname field field is missing.");
+      }
+
+      if (!body?.phone_number) {
+        return badRequest("phone_number field field is missing.");
+      }
+
+      if (!body?.email) {
+        return badRequest("email field field is missing.");
+      }
+
+      if (!body?.password) {
+        return badRequest("password field field is missing.");
+      }
+
       if (!emailIsValid) {
         return badRequest("E-mail is invalid.");
       }
@@ -33,7 +55,6 @@ export class CreateUserController implements IController {
 
       const user = await this.createUserRepository.createUser(newUser);
 
-      // TODO: mover esta criação de token para um arquivo helper
       const token = createToken(user);
 
       /* TODO: fazer uma requisição via token recebido pelo usuário para ver se
