@@ -33,6 +33,7 @@ export class PostgresUpdateBookingRepository
       id: updatedBooking.id,
       userId: updatedBooking.userId,
       date: updatedBooking.date,
+      total: updatedBooking.total,
     };
 
     return mappedBooking;

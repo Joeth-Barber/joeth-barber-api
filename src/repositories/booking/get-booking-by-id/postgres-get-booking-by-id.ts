@@ -47,6 +47,7 @@ export class PostgresGetBookingByIdRepository
 
     return {
       id: booking.id,
+      total: booking.total,
       userId: booking.userId,
       date: booking.date,
       services: mappedServices,

@@ -11,7 +11,7 @@ datasource db {
 
 model User {
   id             String    @id @default(uuid())
-  role        String
+  role           String
   full_name      String
   nickname       String
   email          String    @unique
@@ -35,11 +35,12 @@ model Service {
 }
 
 model Booking {
-  id         String           @id @default(uuid())
-  userId String
-  date       DateTime
-  user   User         @relation(fields: [userId], references: [id])
-  services   BookingService[]
+  id       String           @id @default(uuid())
+  userId   String
+  date     DateTime
+  total    Decimal          @db.Decimal(10, 2)
+  user     User             @relation(fields: [userId], references: [id])
+  services BookingService[]
 
   @@map("bookings")
 }
@@ -57,10 +58,10 @@ model BookingService {
 }
 
 model CalendarMonth {
-  id String @id @default(uuid())
+  id             String   @id @default(uuid())
   notWorkingDays String[]
-  month DateTime
-  workHourRange String[]
+  month          DateTime
+  workHourRange  String[]
 
   @@map("calendar_months")
 }

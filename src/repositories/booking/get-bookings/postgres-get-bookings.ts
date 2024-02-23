@@ -19,6 +19,7 @@ export class PostgresGetBookingsRepository implements IGetBookingsRepository {
       id: bookingFromDB.id,
       userId: bookingFromDB.userId,
       date: bookingFromDB.date,
+      total: bookingFromDB.total,
       user: {
         id: bookingFromDB.user.id,
         role: bookingFromDB.user.role,

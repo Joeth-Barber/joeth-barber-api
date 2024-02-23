@@ -63,6 +63,7 @@ export class PostgresDeleteBookingsRepository
       id: booking.id,
       userId: booking.userId,
       date: booking.date,
+      total: booking.total,
       services: mappedServices,
       user: mappedUser,
     };
