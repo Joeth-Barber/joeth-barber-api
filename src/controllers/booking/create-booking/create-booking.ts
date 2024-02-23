@@ -1,9 +1,11 @@
+import { prisma } from "../../../database/postgres";
 import { IBookings } from "../../../models/bookings";
 import { badRequest, ok, serverError } from "../../helpers";
 import { IController, IHttpRequest, IHttpResponse } from "../../protocols";
 import { IGetBookingsRepository } from "../get-bookings/protocols";
 import { ICreateBookingRepository, ICreateBookingsParams } from "./protocols";
 
+//Retornar um body vazio.
 export class CreateBookingsController implements IController {
   constructor(
     private readonly createBookingsRepository: ICreateBookingRepository,
@@ -50,6 +52,26 @@ export class CreateBookingsController implements IController {
 
       const booking =
         await this.createBookingsRepository.createBookings(newBooking);
+
+      if (booking) {
+        const currentUser = await prisma.user.findUnique({
+          where: { id: booking.userId },
+        });
+
+        if (currentUser) {
+          const updatedUser = await prisma.user.update({
+            where: { id: booking.userId },
+            data: {
+              debt: currentUser.debt.plus(booking.total || 0),
+            },
+          });
+
+          const bookingWithUpdatedUser = {
+            ...(booking.user = updatedUser),
+          };
+          return ok<IBookings>(bookingWithUpdatedUser);
+        }
+      }
 
       return ok<IBookings>(booking);
     } catch (error) {

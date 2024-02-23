@@ -14,8 +14,6 @@ export class DeleteServiceController implements IController {
     try {
       const id = httpRequest?.params?.id;
 
-      console.log("service id: ", id);
-
       if (!id) {
         return badRequest("Missing service Id.");
       }

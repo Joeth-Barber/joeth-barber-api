@@ -31,8 +31,6 @@ export class PostgresCreateBookingsRepository
         },
       });
 
-      console.log(services);
-
       if (services && services.length > 0) {
         const total = services.reduce(
           (acc, service) => acc.plus(new Decimal(service.price.toString())),

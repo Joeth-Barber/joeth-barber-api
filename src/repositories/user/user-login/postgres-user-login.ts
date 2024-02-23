@@ -29,6 +29,6 @@ export class PostgresUserLoginRepository implements IUserLoginRepository {
       return userAdmin;
     }
 
-    return userCustomer;
+    return user;
   }
 }
